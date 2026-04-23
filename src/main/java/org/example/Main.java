@@ -1,97 +1,101 @@
 package org.example;
 
-
 public class Main {
     private static final int ITERATIONS = 1000;
 
     public static void main(String[] args) {
+        long timeArrAddLast, timeLnkAddLast;
+        long timeArrAddFirst, timeLnkAddFirst;
+        long timeArrGet, timeLnkGet;
+        long timeArrRemLast, timeLnkRemLast;
+        long timeArrRemFirst, timeLnkRemFirst;
 
+        // --- 1. ДОБАВЛЕНИЕ В КОНЕЦ ---
+        ArrayList<Integer> arrLast = new ArrayList<>();
+        LinkedList<Integer> lnkLast = new LinkedList<>();
 
-        System.out.println(" ОПЕРАЦИЯ: ADD (Добавление элементов) x" + ITERATIONS + "\n");
-
-        System.out.println("1. ArrayList.addLast():");
-        ArrayList<Integer> arrayList = new ArrayList<>();
         long startTime = System.nanoTime();
-        for (int i = 0; i < ITERATIONS; i++) {
-            arrayList.addLast(i);
-        }
-        long endTime = System.nanoTime();
-        long duration = endTime - startTime;
-        double avgTime = (double) duration / ITERATIONS;
-        printTime("addLast (total)", duration);
+        for (int i = 0; i < ITERATIONS; i++) arrLast.addLast(i);
+        timeArrAddLast = System.nanoTime() - startTime;
 
-        System.out.println("\n2. LinkedList.addLast():");
-        LinkedList<Integer> linkedList = new LinkedList<>();
+        startTime = System.nanoTime();
+        for (int i = 0; i < ITERATIONS; i++) lnkLast.addLast(i);
+        timeLnkAddLast = System.nanoTime() - startTime;
+
+        // --- 2. ПОЛУЧЕНИЕ ПО ИНДЕКСУ ---
+        startTime = System.nanoTime();
+        for (int i = 0; i < ITERATIONS; i++) arrLast.get(i % arrLast.getSize());
+        timeArrGet = System.nanoTime() - startTime;
+
+        startTime = System.nanoTime();
+        for (int i = 0; i < ITERATIONS; i++) lnkLast.get(i % lnkLast.getSize());
+        timeLnkGet = System.nanoTime() - startTime;
+
+        // --- 3. ДОБАВЛЕНИЕ В НАЧАЛО ---
+        ArrayList<Integer> arrFirst = new ArrayList<>();
+        LinkedList<Integer> lnkFirst = new LinkedList<>();
+
+        startTime = System.nanoTime();
+        for (int i = 0; i < ITERATIONS; i++) arrFirst.addFirst(i);
+        timeArrAddFirst = System.nanoTime() - startTime;
+
+        startTime = System.nanoTime();
+        for (int i = 0; i < ITERATIONS; i++) lnkFirst.addFirst(i);
+        timeLnkAddFirst = System.nanoTime() - startTime;
+
+        // --- 4. УДАЛЕНИЕ С НАЧАЛА ---
         startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) {
-            linkedList.addLast(i);
+           arrFirst.removeFirst();
         }
-        endTime = System.nanoTime();
-        duration = endTime - startTime;
-        avgTime = (double) duration / ITERATIONS;
-        printTime("addLast (total)", duration);
+        timeArrRemFirst = System.nanoTime() - startTime;
 
-        System.out.println("\n ОПЕРАЦИЯ: GET (Получение элементов) x" + ITERATIONS + "\n");
-
-        // ArrayList - get
-        System.out.println("3. ArrayList.get():");
         startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) {
-            arrayList.get(i % arrayList.getSize());
+            lnkFirst.removeFirst();
         }
-        endTime = System.nanoTime();
-        duration = endTime - startTime;
-        avgTime = (double) duration / ITERATIONS;
-        printTime("get (total)", duration);
+        timeLnkRemFirst = System.nanoTime() - startTime;
 
-        System.out.println("\n4. LinkedList.getByIndex():");
+        // --- 5. УДАЛЕНИЕ С КОНЦА ---
         startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) {
-            linkedList.getByIndex(i % linkedList.getSize());
+            arrLast.removeLast();
         }
-        endTime = System.nanoTime();
-        duration = endTime - startTime;
-        avgTime = (double) duration / ITERATIONS;
-        printTime("getByIndex (total)", duration);
+        timeArrRemLast = System.nanoTime() - startTime;
 
-        System.out.println("\n ОПЕРАЦИЯ: DELETE (Удаление элементов) x" + (ITERATIONS / 2) + "\n");
-
-        System.out.println("5. ArrayList.removeLast():");
         startTime = System.nanoTime();
-        int removeCount = ITERATIONS / 2;
-        for (int i = 0; i < removeCount; i++) {
-            if (!arrayList.isEmpty()) {
-                arrayList.removeLast();
-            }
+        for (int i = 0; i < ITERATIONS; i++) {
+            lnkLast.removeLast();
         }
-        endTime = System.nanoTime();
-        duration = endTime - startTime;
-        avgTime = (double) duration / removeCount;
-        printTime("removeLast (total)", duration);
+        timeLnkRemLast = System.nanoTime() - startTime;
 
+        // ВЫВОД ИТОГОВОЙ ТАБЛИЦЫ
+        System.out.println("\n" + "=".repeat(110));
+        System.out.printf("%-25s | %-15s | %-25s | %-20s\n",
+                "Название метода", "Кол-во вызовов", "Время (наносекунды)", "Время (миллисекунды)");
+        System.out.println("-".repeat(110));
 
-        System.out.println("\n6. LinkedList.removeLast():");
-        startTime = System.nanoTime();
-        for (int i = 0; i < removeCount; i++) {
-            if (!linkedList.isEmpty()) {
-                linkedList.removeLast();
-            }
-        }
-        endTime = System.nanoTime();
-        duration = endTime - startTime;
-        avgTime = (double) duration / removeCount;
-        printTime("removeLast (total)", duration);
+        String row = "%-25s | %-15d | %-25d | %-20.4f\n";
 
+        System.out.printf(row, "ArrayList.addLast", ITERATIONS, timeArrAddLast, timeArrAddLast / 1000000.0);
+        System.out.printf(row, "LinkedList.addLast", ITERATIONS, timeLnkAddLast, timeLnkAddLast / 1000000.0);
+        System.out.println("-".repeat(110));
 
-    }
+        System.out.printf(row, "ArrayList.addFirst", ITERATIONS, timeArrAddFirst, timeArrAddFirst / 1000000.0);
+        System.out.printf(row, "LinkedList.addFirst", ITERATIONS, timeLnkAddFirst, timeLnkAddFirst / 1000000.0);
+        System.out.println("-".repeat(110));
 
-    static void printTime(String operation, long nanoseconds) {
-        double milliseconds = nanoseconds / 1_000_000.0;
-        double seconds = nanoseconds / 1_000_000_000.0;
+        System.out.printf(row, "ArrayList.get", ITERATIONS, timeArrGet, timeArrGet / 1000000.0);
+        System.out.printf(row, "LinkedList.getByIndex", ITERATIONS, timeLnkGet, timeLnkGet / 1000000.0);
+        System.out.println("-".repeat(110));
 
-        System.out.println("  Операция: " + operation);
-        System.out.println("  Наносекунды: " + nanoseconds + " ns");
-        System.out.println("  Миллисекунды: " + String.format("%.4f", milliseconds) + " ms");
-        System.out.println("  Секунды: " + String.format("%.6f", seconds) + " s");
+        System.out.printf(row, "ArrayList.removeFirst", ITERATIONS, timeArrRemFirst, timeArrRemFirst / 1000000.0);
+        System.out.printf(row, "LinkedList.removeFirst", ITERATIONS, timeLnkRemFirst, timeLnkRemFirst / 1000000.0);
+        System.out.println("-".repeat(110));
+
+        System.out.printf(row, "ArrayList.removeLast", ITERATIONS, timeArrRemLast, timeArrRemLast / 1000000.0);
+        System.out.printf(row, "LinkedList.removeLast", ITERATIONS, timeLnkRemLast, timeLnkRemLast / 1000000.0);
+
+        System.out.println("=".repeat(110));
     }
 }

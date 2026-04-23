@@ -124,7 +124,7 @@ public class LinkedList<T> {
     }
 
     // Возвращает элемент по указанному индексу.
-    public T getByIndex(int index) {
+    public T get(int index) {
         if (index >= 0 && index < size) {
             Node<T> temp = head;
             int counter = 0;
