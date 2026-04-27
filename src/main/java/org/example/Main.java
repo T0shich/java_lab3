@@ -4,16 +4,19 @@ public class Main {
     private static final int ITERATIONS = 1000;
 
     public static void main(String[] args) {
+
         long timeArrAddLast, timeLnkAddLast;
         long timeArrAddFirst, timeLnkAddFirst;
         long timeArrGet, timeLnkGet;
         long timeArrRemLast, timeLnkRemLast;
         long timeArrRemFirst, timeLnkRemFirst;
 
-        // --- 1. ДОБАВЛЕНИЕ В КОНЕЦ ---
         ArrayList<Integer> arrLast = new ArrayList<>();
         LinkedList<Integer> lnkLast = new LinkedList<>();
 
+        /**
+         * Проверка добавления в конец списка
+         */
         long startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) arrLast.addLast(i);
         timeArrAddLast = System.nanoTime() - startTime;
@@ -22,7 +25,9 @@ public class Main {
         for (int i = 0; i < ITERATIONS; i++) lnkLast.addLast(i);
         timeLnkAddLast = System.nanoTime() - startTime;
 
-        // --- 2. ПОЛУЧЕНИЕ ПО ИНДЕКСУ ---
+        /**
+         * Проверка получения элемента по индексу
+         */
         startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) arrLast.get(i % arrLast.getSize());
         timeArrGet = System.nanoTime() - startTime;
@@ -31,10 +36,12 @@ public class Main {
         for (int i = 0; i < ITERATIONS; i++) lnkLast.get(i % lnkLast.getSize());
         timeLnkGet = System.nanoTime() - startTime;
 
-        // --- 3. ДОБАВЛЕНИЕ В НАЧАЛО ---
         ArrayList<Integer> arrFirst = new ArrayList<>();
         LinkedList<Integer> lnkFirst = new LinkedList<>();
 
+        /**
+         * Проверка добавления в начало списка
+         */
         startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) arrFirst.addFirst(i);
         timeArrAddFirst = System.nanoTime() - startTime;
@@ -43,7 +50,9 @@ public class Main {
         for (int i = 0; i < ITERATIONS; i++) lnkFirst.addFirst(i);
         timeLnkAddFirst = System.nanoTime() - startTime;
 
-        // --- 4. УДАЛЕНИЕ С НАЧАЛА ---
+        /**
+         *  Проверка удаления первого элемента из списка
+         */
         startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) {
            arrFirst.removeFirst();
@@ -56,7 +65,9 @@ public class Main {
         }
         timeLnkRemFirst = System.nanoTime() - startTime;
 
-        // --- 5. УДАЛЕНИЕ С КОНЦА ---
+        /**
+         *  Проверка удаления последнего элемента из списка
+         */
         startTime = System.nanoTime();
         for (int i = 0; i < ITERATIONS; i++) {
             arrLast.removeLast();
@@ -69,7 +80,6 @@ public class Main {
         }
         timeLnkRemLast = System.nanoTime() - startTime;
 
-        // ВЫВОД ИТОГОВОЙ ТАБЛИЦЫ
         System.out.println("\n" + "=".repeat(110));
         System.out.printf("%-25s | %-15s | %-25s | %-20s\n",
                 "Название метода", "Кол-во вызовов", "Время (наносекунды)", "Время (миллисекунды)");
